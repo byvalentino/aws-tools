@@ -22,7 +22,9 @@
 # - tr
 # Author: diego.toharia@osoco.es - OSOCO
 
+
 COMMON_SCRIPT_PATH="`dirname $0`/aws-common.sh"
+export AWS_TOOLS_MASTER=/home/ubuntu/aws-tools-master
 if [ -f "$COMMON_SCRIPT_PATH" ] ; then
     source $COMMON_SCRIPT_PATH
 else
@@ -91,6 +93,9 @@ for VOLUME_ID in $VOLUMES_IDS ; do
     create_or_append_to_var CREATE_SNAP_CMD "ec2-create-snapshot"
     if [ ! -z "$SNAPSHOT_DESCRIPTION" ]; then
         create_or_append_to_var CREATE_SNAP_CMD "-d '$SNAPSHOT_DESCRIPTION'"
+	    create_or_append_to_var CREATE_SNAP_CMD "-W '$EC2_SECRET'"
+		create_or_append_to_var CREATE_SNAP_CMD "-O '$EC2_ACCESS_ID'"
+		create_or_append_to_var CREATE_SNAP_CMD "-region '$EC2_URL'"
     fi
     create_or_append_to_var CREATE_SNAP_CMD "$VOLUME_ID"
     execute SNAPSHOT_CREATION_OUTPUT "$CREATE_SNAP_CMD"
@@ -105,6 +110,9 @@ for VOLUME_ID in $VOLUMES_IDS ; do
             create_or_append_to_var TAG_SNAP_CMD "ec2-create-tags"
             create_or_append_to_var TAG_SNAP_CMD "$SNAPSHOT_ID"
             create_or_append_to_var TAG_SNAP_CMD "-t $TAG"
+		create_or_append_to_var TAG_SNAP_CMD "-W '$EC2_SECRET'"
+		create_or_append_to_var TAG_SNAP_CMD "-O '$EC2_ACCESS_ID'"
+		create_or_append_to_var TAG_SNAP_CMD "-region '$EC2_URL'"
             execute TAG_SNAP_OUTPUT "$TAG_SNAP_CMD"
         done
     fi
