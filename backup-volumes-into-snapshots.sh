@@ -24,7 +24,6 @@
 
 
 COMMON_SCRIPT_PATH="`dirname $0`/aws-common.sh"
-export AWS_TOOLS_MASTER=/home/ubuntu/aws-tools-master
 if [ -f "$COMMON_SCRIPT_PATH" ] ; then
     source $COMMON_SCRIPT_PATH
 else
